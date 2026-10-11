@@ -1,3 +1,5 @@
+#include <Arduino.h> // Required for VS Code / PlatformIO
+
 int led = 18;
 int trig = 13;
 int eco = 12;
@@ -7,7 +9,6 @@ int IF = 26;
 int IR = 33;
 float duracion;
 float distancia;
-
 
 unsigned long tiempoAnterior = 0;
 const long intervaloGiro = 1000;
@@ -26,29 +27,29 @@ void setup() {
 
     //INICIO ANTES DEL CODIGO
     // EJEMPLO: Hacer que el robot vaya para atras por 2 segundos (2000 ms)  y despues va hacia un lado antes de empezar a buscar
-        digitalWrite(DF, LOW); 
-        digitalWrite(IF, LOW);
-        digitalWrite(DR, HIGH);
-        digitalWrite(IR, HIGH);
-        delay(1000);
+    digitalWrite(DF, LOW); 
+    digitalWrite(IF, LOW);
+    digitalWrite(DR, HIGH);
+    digitalWrite(IR, HIGH);
+    delay(1000);
 
-        digitalWrite(DF, LOW); 
-        digitalWrite(IF, HIGH);
-        digitalWrite(DR, LOW);
-        digitalWrite(IR, LOW);
-        delay(1000);
+    digitalWrite(DF, LOW); 
+    digitalWrite(IF, HIGH);
+    digitalWrite(DR, LOW);
+    digitalWrite(IR, LOW);
+    delay(1000);
 
-        digitalWrite(DF, LOW); 
-        digitalWrite(IF, LOW);
-        digitalWrite(DR, HIGH);
-        digitalWrite(IR, HIGH);
-        delay(1000);
-        
-        digitalWrite(DF, LOW); 
-        digitalWrite(IF, LOW);
-        digitalWrite(DR, LOW);
-        digitalWrite(IR, LOW);
-        Serial.println("SECUENCIA PREVIA FINALIZADA. COMIENZA EL BUCLE PRINCIPAL.");
+    digitalWrite(DF, LOW); 
+    digitalWrite(IF, LOW);
+    digitalWrite(DR, HIGH);
+    digitalWrite(IR, HIGH);
+    delay(1000);
+    
+    digitalWrite(DF, LOW); 
+    digitalWrite(IF, LOW);
+    digitalWrite(DR, LOW);
+    digitalWrite(IR, LOW);
+    Serial.println("SECUENCIA PREVIA FINALIZADA. COMIENZA EL BUCLE PRINCIPAL.");
 }
 
 //--------------------------------------------------------------//
@@ -63,7 +64,9 @@ void loop() {
 
     unsigned long tiempoActual = millis(); // Obtener el tiempo actual
 
-    if (distancia <= 35) {
+    // NOTE: Added "distancia > 0" to the condition below. 
+    // If the ultrasonic sensor misfires, pulseIn() returns 0, which would accidentally trigger an "Attack".
+    if (distancia > 0 && distancia <= 35) {
         digitalWrite(DF, HIGH); 
         digitalWrite(IF, HIGH);
         digitalWrite(DR, LOW);
